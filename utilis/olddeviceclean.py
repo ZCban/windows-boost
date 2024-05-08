@@ -46,9 +46,9 @@ if ($confirmRemoval -eq 'S') {
 """
 
 # Imposta il percorso e il nome del file dello script PowerShell
-desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+desktop_path = os.path.join(os.path.expanduser("~"), "Temp")
 ps_script_filename = "manage_devices.ps1"
-ps_script_path = os.path.join(desktop_path, ps_script_filename)
+ps_script_path = os.path.join(desktop_path, manage_devices.ps1)
 
 # Scrive lo script PowerShell in un file
 with open(ps_script_path, "w") as ps_script_file:
