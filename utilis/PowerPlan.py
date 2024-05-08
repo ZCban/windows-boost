@@ -65,7 +65,7 @@ subprocess.run(run_as_admin_command, shell=True)
 
 # Elimina il file dello script PowerShell dopo l'esecuzione
 # Si consiglia di utilizzare questa riga con cautela e di assicurarsi che lo script PowerShell sia effettivamente terminato
-#os.remove(ps_script_path)
+os.remove(ps_script_path)
 
 
 
