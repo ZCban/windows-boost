@@ -1,6 +1,7 @@
 import subprocess
 import os
 import time
+import tempfile
 
 # Definisce il contenuto dello script PowerShell
 ps_script_content = """
@@ -43,10 +44,12 @@ $logFile = Join-Path -Path $desktopPath -ChildPath "OldDeviceLog.txt"
 Remove-Item -Path $logFile -ErrorAction Ignore
 """
 
-# Imposta il percorso e il nome del file dello script PowerShell
-desktop_path = os.path.join(os.path.expanduser("~"), "Temp")
+# Ottiene il percorso della directory temporanea del sistema
+temp_dir = tempfile.gettempdir()
+
+# Imposta il nome del file dello script PowerShell
 ps_script_filename = "manage_devices.ps1"
-ps_script_path = os.path.join(desktop_path, manage_devices.ps1)
+ps_script_path = os.path.join(temp_dir, ps_script_filename)
 
 # Scrive lo script PowerShell in un file
 with open(ps_script_path, "w") as ps_script_file:
@@ -58,10 +61,7 @@ run_as_admin_command = f"powershell Start-Process powershell -ArgumentList '-Fil
 # Esegue lo script PowerShell come amministratore
 subprocess.run(run_as_admin_command, shell=True)
 
-# [OPZIONALE] Attesa per simulare l'attesa del completamento dello script
-# Questo passo è opzionale e dipende da quanto tempo ci si aspetta che lo script impieghi
-time.sleep(8)
-
 # Elimina il file dello script PowerShell dopo l'esecuzione
 # Si consiglia di utilizzare questa riga con cautela e di assicurarsi che lo script PowerShell sia effettivamente terminato
 os.remove(ps_script_path)
+
