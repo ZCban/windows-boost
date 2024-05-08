@@ -49,7 +49,7 @@ with open(ps_script_path, "w") as ps_script_file:
     ps_script_file.write(ps_script_content)
 
 # Comando per eseguire lo script PowerShell come amministratore
-run_as_admin_command = f"powershell Start-Process powershell -ArgumentList '-File {ps_script_path}' -Verb RunAs"
+#run_as_admin_command = f"powershell Start-Process powershell -ArgumentList '-File {ps_script_path}' -Verb RunAs"
 
 # Esegue lo script PowerShell come amministratore
 subprocess.run(run_as_admin_command, shell=True)
