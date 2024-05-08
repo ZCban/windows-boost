@@ -4,45 +4,43 @@ import time
 
 # Definisce il contenuto dello script PowerShell
 ps_script_content = """
-# Imposta il percorso del file di log sul desktop
-$desktopPath = [Environment]::GetFolderPath("Desktop")
-$logFile = Join-Path -Path $desktopPath -ChildPath "OldDeviceLog.txt"
-
 # Importa il modulo PnpDevice
-Import-Module PnpDevice | Out-File -FilePath $logFile
+Import-Module PnpDevice
 
 # Ottiene tutti i dispositivi PnP
 $allDevices = Get-PnpDevice
 
-# Stampa l'elenco completo dei dispositivi con lo stato di connessione e scrive nel file di log
-"Elenco completo dei dispositivi con stato di connessione:" | Out-File -FilePath $logFile -Append
+# Stampa l'elenco completo dei dispositivi con lo stato di connessione
+"Elenco completo dei dispositivi con stato di connessione:"
 foreach ($device in $allDevices) {
     $status = if ($device.Present) { "Collegato" } else { "Non collegato" }
-    "$($device.FriendlyName) - $status" | Out-File -FilePath $logFile -Append
+    "$($device.FriendlyName) - $status"
 }
 
-# Linea vuota per separare le due liste e scrive nel file di log
-"`nElenco dei dispositivi Non collegati:" | Out-File -FilePath $logFile -Append
-
-# Filtra e stampa solo i dispositivi non collegati e scrive nel file di log
+# Stampa solo i dispositivi non collegati
+"`nElenco dei dispositivi Non collegati:"
 $nonConnectedDevices = $allDevices | Where-Object { -not $_.Present }
 foreach ($device in $nonConnectedDevices) {
-    "$($device.FriendlyName) - Non collegato" | Out-File -FilePath $logFile -Append
+    "$($device.FriendlyName) - Non collegato"
 }
 
 # Chiede conferma prima di procedere con la rimozione
 $confirmRemoval = 'S' #Read-Host "Vuoi procedere con la rimozione dei dispositivi non collegati? (S/N)"
 if ($confirmRemoval -eq 'S') {
-    "Inizio rimozione dei dispositivi non collegati..." | Out-File -FilePath $logFile -Append
+    "Inizio rimozione dei dispositivi non collegati..."
     foreach ($device in $nonConnectedDevices) {
-        "Rimozione del dispositivo: $($device.FriendlyName)" | Out-File -FilePath $logFile -Append
+        "Rimozione del dispositivo: $($device.FriendlyName)"
         & pnputil /remove-device $device.InstanceId
     }
-    "Rimozione completata." | Out-File -FilePath $logFile -Append
+    "Rimozione completata."
 } else {
-    "Rimozione annullata." | Out-File -FilePath $logFile -Append
+    "Rimozione annullata."
 }
 
+# Rimuove il file di log se esiste
+$desktopPath = [Environment]::GetFolderPath("Desktop")
+$logFile = Join-Path -Path $desktopPath -ChildPath "OldDeviceLog.txt"
+Remove-Item -Path $logFile -ErrorAction Ignore
 """
 
 # Imposta il percorso e il nome del file dello script PowerShell
