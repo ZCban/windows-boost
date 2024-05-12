@@ -39,11 +39,11 @@ subprocess.run(run_as_admin_command, shell=True)
 
 # [OPZIONALE] Attesa per simulare l'attesa del completamento dello script
 # Questo passo è opzionale e dipende da quanto tempo ci si aspetta che lo script impieghi
-#time.sleep(3)
+time.sleep(9)
 
 # Elimina il file dello script PowerShell dopo l'esecuzione
 # Si consiglia di utilizzare questa riga con cautela e di assicurarsi che lo script PowerShell sia effettivamente terminato
-#os.remove(ps_script_path)
+os.remove(ps_script_path)
 
 
 
